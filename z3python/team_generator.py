@@ -1,5 +1,6 @@
 import z3
 from itertools import product 
+from swim_data import wins_and_losses 
 # Definition of Constants 
 """ 
 Since z3 handles integers better than strings, we will define all of the string constants as integers
@@ -24,13 +25,43 @@ Solver 2:
 RED = 0 
 WHITE = 1 
 BLUE = 2 
-def Team(): 
-    def __init__(self, number, division, wins, losses):
-        pass
+class Helper(): 
+    def __init__(self, solver, games, wins_losses, red, white, blue):
+        self.solver = solver
+        self.games = games
+        self.wins_losses = wins_losses 
+        self.red = red 
+        self.white = white 
+        self.blue = blue
+        self.red_pairings = [] 
+        self.white_pairings = [] 
+        self.blue_pairings = [] 
+        red_div = sorted(wins_losses[red[0]:red[1] + 1], key=lambda team: team['ratio'][0])  
+        blue_div = sorted(wins_losses[blue[0]:blue[1] + 1], key=lambda team: team['ratio'][0]) 
+        white_div = sorted(wins_losses[white[0]:white[1] + 1], key=lambda team: team['ratio'][0]) 
+        for division in [(self.red_pairings, red_div), (self.white_pairings, white_div), (self.blue_pairings, blue_div)]: 
+            pairings, div = division
+            for i in range(0,len(div), 2):
+                print(i) 
+                if (i + 1 > len(div) - 1 ): 
+                   opp = -1 
+                else: 
+                    opp = div[::-1][i + 1]['team'] 
+                pairings.append((div[::-1][i]['team'], opp)) 
+        
 
 
+
+def find_competitors(win_loss): 
+    sorted_teams = sorted(win_loss, key=lambda team: team['ratio'][0]) 
+    print(sorted_teams) 
 # Solve Saturday meets problem
+# Find most competitive teams and pair them for final game
+# Make sure there are the correct number of Saturday meets based on number of Saturdays
+# 
 
+def saturday_meets(solver, games, win_loss): 
+    pairings = find_competitors(win_loss) 
 
 
 # Generates the array of opponent variables and sets up a solver object with 
@@ -54,7 +85,7 @@ def generate_variables(num_teams, num_games):
     for team in range(num_teams):
         opponents = games[team] # Get the opponents for the team
         for opp in opponents: 
-            s.add(z3.And((opp >> 1) < num_teams, (opp >> 1) >= 0)) # Team in a valid range 
+            s.add(z3.And((opp >> 1) < num_teams, (opp >> 1) >= -1 )) # Team in a valid range 
             s.add((opp >> 1) != team) # Team can't play themselves 
     
     # Handle Distinct opponents 
@@ -77,8 +108,6 @@ def generate_variables(num_teams, num_games):
             if_true = z3.And(opposing_team2 == team1, (team1_home ^ team2_home) == 1  )
             s.add(z3.If(opposing_team1 == team2, if_true, True)) 
 
-    if (s.check() == z3.sat): 
-        print("we're cooling") 
     return s, games
 
 def print_game_model(solver, games, num_games, num_teams): 
@@ -93,8 +122,9 @@ def print_game_model(solver, games, num_games, num_teams):
         line1 += f"Game{i}" + " "*8 
     print(line1) 
     for team in range(num_teams): 
-        line = f"Team{team}" + " "*8 
+        line = f"Team{team}" 
         for game in range(num_games): 
+            line = line.ljust(13*(game + 1), " ")  
             sol_result = solution_games[team][game] 
             home = sol_result & 1 
             opposer = sol_result >> 1 
@@ -103,12 +133,13 @@ def print_game_model(solver, games, num_games, num_teams):
                 line += "H" 
             else: 
                 line += "A" 
-            line += " "*8 
         print(line) 
 
 def main(): 
     # There are 8 meets and 20 teams 
     solver, games = generate_variables(20, 8) 
+    x = Helper(solver,games,wins_and_losses,(0, 6), (7, 12), (13, 19)) 
+    print(x.red_pairings) 
     print_game_model(solver, games, 8, 20) 
 if __name__ == "__main__": 
     main() 

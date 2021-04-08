@@ -19,3 +19,4 @@ wins_losses = [(2, 4),
                (2, 4), 
                (4,2)] 
 
+wins_and_losses = [{'team': 0, 'ratio': (2, 4)}, {'team': 1, 'ratio': (6, 0)}, {'team': 2, 'ratio': (3, 3)}, {'team': 3, 'ratio': (6, 0)}, {'team': 4, 'ratio': (1, 5)}, {'team': 5, 'ratio': (4, 2)}, {'team': 6, 'ratio': (5, 1)}, {'team': 7, 'ratio': (5, 1)}, {'team': 8, 'ratio': (3, 3)}, {'team': 9, 'ratio': (2, 4)}, {'team': 10, 'ratio': (4, 2)}, {'team': 11, 'ratio': (6, 0)}, {'team': 12, 'ratio': (1, 5)}, {'team': 13, 'ratio': (3, 3)}, {'team': 14, 'ratio': (0, 6)}, {'team': 15, 'ratio': (0, 6)}, {'team': 16, 'ratio': (5, 1)}, {'team': 17, 'ratio': (1, 5)}, {'team': 18, 'ratio': (2, 4)}, {'team': 19, 'ratio': (4, 2)}]
