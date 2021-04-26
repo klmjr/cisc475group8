@@ -38,11 +38,13 @@ const colors: any = {
   },
 };
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent {
   title = 'ssl-calendar';
   
@@ -82,6 +84,18 @@ export class AppComponent {
   public dropDownValue = "";
       SetDropDownValue(drpValue : any) {
         this.dropDownValue = drpValue.target.value;
+      if(this.dropDownValue == "Red"){
+        this.events = this.revents;
+      }
+      else if(this.dropDownValue == "Blue"){
+        this.events = this.bevents;
+      }
+      else if(this.dropDownValue == "White"){
+        this.events = this.wevents;
+      }
+      else{
+        this.events = this.testevents;
+      }
     }
 
   revents: CalendarEvent[] = [
@@ -94,8 +108,32 @@ export class AppComponent {
     },
   ]
 
-  events: CalendarEvent[] = [
+  bevents: CalendarEvent[] = [
     {
+      start: subDays(startOfDay(new Date()), 1),
+      title: 'A 3 day event',
+      color: colors.blue,
+
+
+    },
+  ]
+
+  wevents: CalendarEvent[] = [
+    {
+      start: subDays(startOfDay(new Date()), 1),
+      title: 'A 3 day event',
+      color: colors.red,
+
+
+    },
+  ]
+  events: CalendarEvent[] = 
+  [
+
+  ]
+  testevents: CalendarEvent[] = [
+    
+   /* {
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),
       title: 'A 3 day event',
@@ -133,6 +171,7 @@ export class AppComponent {
       },
       draggable: true,
     },
+    */
   ];
 
   activeDayIsOpen: boolean = true;
