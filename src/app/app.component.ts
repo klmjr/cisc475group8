@@ -78,6 +78,22 @@ export class AppComponent {
 
   refresh: Subject<any> = new Subject();
 
+  //Creates component for drop down menu
+  public dropDownValue = "";
+      SetDropDownValue(drpValue : any) {
+        this.dropDownValue = drpValue.target.value;
+    }
+
+  revents: CalendarEvent[] = [
+    {
+      start: subDays(startOfDay(new Date()), 1),
+      title: 'A 3 day event',
+      color: colors.red,
+
+
+    },
+  ]
+
   events: CalendarEvent[] = [
     {
       start: subDays(startOfDay(new Date()), 1),

@@ -67,6 +67,21 @@
     </div>
   </div>
 </div>
+
+<h2>Division</h2>
+<select (change)="SetDropDownValue($event)">
+  <option value="">Select</option>
+  <option value="Red">Red</option>
+  <option value="White">White</option>
+  <option value="Blue">Blue</option>
+</select>
+
+<div [ngSwitch] = 'dropDownValue'>
+  <h3 *ngSwitchCase="'In'">India</h3>
+  <h3 *ngSwitchCase="'US'">United State</h3>
+  <h3 *ngSwitchCase="'UK'">United Kingdom</h3>
+  <h3 *ngSwitchDefault=""></h3>
+</div>
 <br />
 <div [ngSwitch]="view">
   <mwl-calendar-month-view
