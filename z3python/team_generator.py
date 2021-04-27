@@ -231,7 +231,7 @@ class TeamGenerator():
             division.gen_final_pairings(self.data) 
 
         # Make sure the number of saturday homegames is correct 
-         
+        # TODO update this to include the variability that can occur depending on number of Saturday games etc.
         for team in range(len(self.data.games)): 
             opponents = self.data.games[team] 
             count = 0 
@@ -246,44 +246,22 @@ class TeamGenerator():
             division.intradivision_games(self.data) 
     def first_saturday_crossovers(self): 
         pass 
-
-    """ 
-    def intradivision_games(self): 
-        # for the weeks that aren't the first week or the last week, there will be one interdivision 
-        weeks = self.games[1:-1] 
-        div_list = ["red", "blue"]  
-        for division in div_list: 
-            indices = getattr(self, division) 
-            for week in range(1, len(self.games[0]) - 1): 
-                count_intra = 0 
-                count_inter = 0 
-                start, end = indices 
-                for team in range(start, end + 1): 
-                    intra_cond = z3.And((self.games[team][week] >> 1 ) >= start, (self.games[team][week] >> 1) <= end)
-                    start_inter, end_inter = self.white 
-                    inter_cond = z3.And((self.games[team][week] >> 1) >= start_inter, (self.games[team][week] >> 1) <= end_inter) 
-                    
-                    count_intra += z3.If(intra_cond, 1, 0) 
-                    count_inter += z3.If(inter_cond, 1, 0) 
-                self.solver.add(count_intra == end - start) 
-                self.solver.add(count_inter == 1) 
-        for week in range(1, len(self.games[0]) - 1): 
-            count_intra = 0 
-            count_inter_blue = 0
-            count_inter_red = 0 
-            start, end = self.white 
-            start_blue, end_blue = self.blue 
-            start_red, end_red = self.red 
-            for team in range(start, end + 1): 
-                intra_cond = z3.And((self.games[team][week] >> 1) >= start, (self.games[team][week] >> 1) <= end) 
-                inter_cond_blue = z3.And((self.games[team][week] >> 1) >= start_blue, (self.games[team][week] >> 1) <= end_blue ) 
-                inter_cond_red = z3.And((self.games[team][week] >> 1) >= start_red, (self.games[team][week] >> 1) <= end_red) 
-                count_intra += z3.If(intra_cond, 1, 0) 
-                count_inter_red += z3.If(inter_cond_red, 1, 0) 
-                count_inter_blue += z3.If(inter_cond_blue, 1, 0) 
-            self.solver.add(count_intra == end - start - 1) 
-            self.solver.add(count_inter_red == 1) 
-            self.solver.add(count_inter_blue == 1) 
+        """ 
+        for team in range(len(self.data.games)): 
+            game = self.data.games[team][0] # The first game in the season 
+            if (team in range(self.data.red_indices[0], self.data.red_indices[1] + 1)): 
+                opponent = getTeam(game)
+                self.data.solver.add(z3.And(opponent >= self.data.red_indices[1], opponent <= self.data.blue_indices[1]))
+            elif (team in range(self.data.blue_indices[0], self.data.blue_indices[1] + 1)): 
+                opponent = getTeam(game)
+                self.data.solver.add(z3.And(opponent >= self.data.red_indices[0], opponent <= self.data.white_indices[1]))
+            else: 
+                # Team is a white team 
+                opponent = getTeam(game) 
+                blue_opp = z3.And(opponent <= self.data.blue_indices[1], opponent >= self.data.blue_indices[0])
+                red_opp = z3.And(opponent <= self.data.white_indices[1], opponent >= self.data.white_indices[0])
+                self.data.solver.add(z3.Or(blue_opp, red_opp)) 
+                pass 
         """ 
 
 #Get home 
@@ -297,26 +275,7 @@ def getHome(team):
 # Output: the team corresponding to the Input 
 def getTeam(team): 
     return team >> 1 
-# Solve Saturday meets problem
-# Find most competitive teams and pair them for final game
-# Make sure there are the correct number of Saturday meets based on number of Saturdays
-# 
 
-def saturday_meets(helper): 
-    saturdays = [0, 2, 4,5,7] 
-    for division in [helper.red_pairings, helper.blue_pairings, helper.white_pairings]: 
-        for pairing in division: 
-            team1, team2 = pairing 
-            helper.solver.add((helper.games[team1][-1] >> 1) == team2)
-            if (team2 != -1): 
-                helper.solver.add((helper.games[team2][-1] >> 1) == team1) 
-    # deal with saturday home games if (helper.num_saturdays == 5): saturdays = [0, 2, 4,5,7] 
-        for team in range(len(helper.games)): 
-            opponents = helper.games[team] 
-            count = 0 
-            for sat in saturdays: 
-                count += z3.If((opponents[sat] & 1) == 1, 1, 0) 
-            helper.solver.add(z3.Or(count == 3, count == 2)) 
 
 def print_game_model(data): 
     if (data.solver.check() != z3.sat): 
@@ -324,7 +283,7 @@ def print_game_model(data):
         return -1 
     model = data.solver.model() 
     solution_games = [[model[data.games[team][game]].as_long() for game in range(data.num_games)] for team in range(data.num_teams)] 
-
+    
     line1 = " "*12 
     for i in range(data.num_games): 
         line1 += f"Game{i}" + " "*8 
@@ -362,12 +321,61 @@ def print_game_model(data):
         line = line.ljust(13*(data.num_games + 1) , " ") + f"{home_count}"
         line = line.ljust(len(line) + 5, " ") + f"{saturday_home_count}" 
         print(line) 
+def print_json(data): 
+    
+    if (data.solver.check() != z3.sat): 
+        print("Houston... we have a problem") 
+        return -1 
+    model = data.solver.model() 
+    solution_games = [[model[data.games[team][game]].as_long() for game in range(data.num_games)] for team in range(data.num_teams)] 
+    
+    games = {}
+    
+    for game in range(data.num_games): 
+        teams = []  
+        for team in range(data.num_teams):
+            result = solution_games[team][game]
+            result_dict = {} 
+            if (result & 1 == 1): 
+                result_dict["Home"] = teams_list[team] 
+                if (result >> 1 in range(20)): 
+                    result_dict["Away"] = teams_list[result >> 1] 
+                else: 
+                    result_dict["Away"] = "TBD" 
+            else:
 
+                if (result >> 1 in range(20)): 
+                    result_dict["Home"] = teams_list[result >> 1] 
+                else: 
+                    result_dict["Home"] = "TBD" 
+                result_dict["Away"] = teams_list[team]
+            if (team in range(data.red_indices[0], data.red_indices[1] + 1)): 
+                result_dict[teams_list[team]] = "Red" 
+            elif (team in range(data.blue_indices[0], data.blue_indices[1] + 1)): 
+                result_dict[teams_list[team]] = "Blue" 
+            else: 
+                result_dict[teams_list[team]] = "White" 
+
+            opp = result >> 1 
+            
+            if (opp in range(data.red_indices[0], data.red_indices[1] + 1)): 
+                result_dict[teams_list[opp]] = "Red" 
+            elif (opp in range(data.blue_indices[0], data.blue_indices[1] + 1)): 
+                result_dict[teams_list[opp]] = "Blue" 
+            elif (opp in range(data.white_indices[0], data.white_indices[1] + 1)): 
+                result_dict[teams_list[opp]] = "White"
+            else: 
+                result_dict["TBD"] = "No div"
+            teams.append(result_dict) 
+
+        games[str(game)] = teams
+    with open("result.json", "w") as f: 
+        f.write(str(games))
 def main(): 
     # There are 8 meets and 20 teams 
     saturdays = [0, 2, 4,5,7] 
     data = Data(8, 20, wins_and_losses,(0, 6), (7, 12), (13, 19), changed, saturdays) 
     team_gen = TeamGenerator(data)
-    print_game_model(data) 
+    print_json(data) 
 if __name__ == "__main__": 
     main() 
