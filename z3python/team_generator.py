@@ -222,7 +222,8 @@ class Data():
 class TeamGenerator(): 
     def __init__(self, data):
         self.data = data
-        self.saturday_meets() 
+        self.saturday_meets()
+          
         self.intradivision_games()
         self.first_saturday_crossovers()  
     def saturday_meets(self): 
@@ -230,8 +231,7 @@ class TeamGenerator():
         for division in self.data.divisions: 
             division.gen_final_pairings(self.data) 
 
-        # Make sure the number of saturday homegames is correct 
-        # TODO update this to include the variability that can occur depending on number of Saturday games etc.
+        # Make sure the number of saturday homegames is correct # TODO update this to include the variability that can occur depending on number of Saturday games etc.
         for team in range(len(self.data.games)): 
             opponents = self.data.games[team] 
             count = 0 
@@ -245,24 +245,23 @@ class TeamGenerator():
         for division in self.data.divisions: 
             division.intradivision_games(self.data) 
     def first_saturday_crossovers(self): 
-        pass 
-        """ 
+         
         for team in range(len(self.data.games)): 
             game = self.data.games[team][0] # The first game in the season 
             if (team in range(self.data.red_indices[0], self.data.red_indices[1] + 1)): 
                 opponent = getTeam(game)
-                self.data.solver.add(z3.And(opponent >= self.data.red_indices[1], opponent <= self.data.blue_indices[1]))
+                self.data.solver.add(z3.And(opponent > self.data.red_indices[1], opponent <= self.data.blue_indices[1]))
             elif (team in range(self.data.blue_indices[0], self.data.blue_indices[1] + 1)): 
                 opponent = getTeam(game)
                 self.data.solver.add(z3.And(opponent >= self.data.red_indices[0], opponent <= self.data.white_indices[1]))
+             
             else: 
                 # Team is a white team 
                 opponent = getTeam(game) 
                 blue_opp = z3.And(opponent <= self.data.blue_indices[1], opponent >= self.data.blue_indices[0])
-                red_opp = z3.And(opponent <= self.data.white_indices[1], opponent >= self.data.white_indices[0])
+                red_opp = z3.And(opponent <= self.data.red_indices[1], opponent >= self.data.red_indices[0])
                 self.data.solver.add(z3.Or(blue_opp, red_opp)) 
-                pass 
-        """ 
+          
 
 #Get home 
 # Input: a Symbolic Variable or an Int 
@@ -278,9 +277,11 @@ def getTeam(team):
 
 
 def print_game_model(data): 
+    print("here1") 
     if (data.solver.check() != z3.sat): 
         print("Houston... we have a problem") 
-        return -1 
+        return -1
+    print("here2") 
     model = data.solver.model() 
     solution_games = [[model[data.games[team][game]].as_long() for game in range(data.num_games)] for team in range(data.num_teams)] 
     
@@ -322,10 +323,11 @@ def print_game_model(data):
         line = line.ljust(len(line) + 5, " ") + f"{saturday_home_count}" 
         print(line) 
 def print_json(data): 
-    
+    print("here1")  
     if (data.solver.check() != z3.sat): 
         print("Houston... we have a problem") 
         return -1 
+    print("here2") 
     model = data.solver.model() 
     solution_games = [[model[data.games[team][game]].as_long() for game in range(data.num_games)] for team in range(data.num_teams)] 
     
@@ -376,6 +378,6 @@ def main():
     saturdays = [0, 2, 4,5,7] 
     data = Data(8, 20, wins_and_losses,(0, 6), (7, 12), (13, 19), changed, saturdays) 
     team_gen = TeamGenerator(data)
-    print_json(data) 
+    print_game_model(data) 
 if __name__ == "__main__": 
     main() 
