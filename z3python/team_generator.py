@@ -181,7 +181,7 @@ class Data():
         # Each row in the 2 x 2 array is the list of opponents for the team the rows correspond to 
         games = [[z3.BitVec(f"Team_{i}_Game_{j}", 32) for j in range(1, num_games + 1)] for i in range(num_teams)]
         
-        s = z3.Solver() 
+        s = z3.Optimize() 
 
         # Each row must have a valid team 
         for team in range(num_teams):
