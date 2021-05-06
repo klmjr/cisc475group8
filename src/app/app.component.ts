@@ -23,7 +23,7 @@ import {
   CalendarEventTimesChangedEvent,
   CalendarView,
 } from 'angular-calendar';
-import data from "../data.json";
+//import data from "../data.json";
 //import { writeFileSync } from 'fs';
 import firebase from "firebase/app";
 import "firebase/database";
