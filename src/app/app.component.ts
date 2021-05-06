@@ -65,6 +65,7 @@ export class AppComponent {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
       a11yLabel: 'Edit',
       onClick: ({ event }: { event: CalendarEvent }): void => {
+        
         this.handleEvent('Edited', event);
       },
     },
@@ -103,6 +104,7 @@ export class AppComponent {
       start: subDays(startOfDay(new Date()), 1),
       title: 'A 3 day event',
       color: colors.red,
+      actions: this.actions,
 
 
     },
@@ -113,6 +115,7 @@ export class AppComponent {
       start: subDays(startOfDay(new Date()), 1),
       title: 'A 3 day event',
       color: colors.blue,
+      actions: this.actions,
 
 
     },
@@ -123,6 +126,7 @@ export class AppComponent {
       start: subDays(startOfDay(new Date()), 1),
       title: 'A 3 day event',
       color: colors.red,
+      actions: this.actions,
 
 
     },
@@ -131,6 +135,8 @@ export class AppComponent {
   [
 
   ]
+
+
   testevents: CalendarEvent[] = [
     
    /* {

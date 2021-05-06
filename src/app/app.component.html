@@ -72,14 +72,53 @@
 <select (change)="SetDropDownValue($event)">
   <option value="">Select</option>
   <option value="Red">Red</option>
-  <option value="White">White</option>
   <option value="Blue">Blue</option>
+  <option value="White">White</option>
+  <option value="North Star">North Star</option>
+  <option value="Wedgewood">Wedgewood</option>
+  <option value="Skyline">Skyline</option>
+  <option value="Westminister">Westminster</option>
+  <option value="Delaware Bluefish">Delaware Bluefish</option>
+  <option value="Nottingham Green">Nottingham Green</option>
+  <option value="Western Y">Western Y</option>
+  <option value="Maple Valley">Maple Valley</option>
+  <option value="Persimmon Creek">Persimmon Creek</option>
+  <option value="Oaklands">Oaklands</option>
+  <option value="Yorklyn">Yorklyn</option>
+  <option value="Bear-Glasgow Y">Bear-Glasgow Y</option>
+  <option value="Penn Acres">Penn Acres</option>
+  <option value="Arundel">Arundel</option>
+  <option value="Crestmoor">Crestmoor</option>
+  <option value="Drummond Hill">Drummond Hill</option>
+  <option value="Oakwood Valley">Oakwood Valley</option>
+  <option value="Sherwood Park">Sherwood Park</option>
+  <option value="Valleybrook">Valleybrook</option>
+  
 </select>
 
 <div [ngSwitch] = 'dropDownValue'>
   <h3 *ngSwitchCase="'Red'">Red</h3>
   <h3 *ngSwitchCase="'White'">White</h3>
   <h3 *ngSwitchCase="'Blue'">Blue</h3>
+  <h3 *ngSwitchCase="'North Star'">North Star</h3>
+  <h3 *ngSwitchCase="'Wedgewood'">Wedgewood</h3>
+  <h3 *ngSwitchCase="'Skyline'">Skyline</h3>
+  <h3 *ngSwitchCase="'Westminister'">Westminster</h3>
+  <h3 *ngSwitchCase="'Delaware Bluefish'">Delaware Bluefish</h3>
+  <h3 *ngSwitchCase="'Nottingham Green'">Nottingham Green</h3>
+  <h3 *ngSwitchCase="'Western Y'">Western Y</h3>
+  <h3 *ngSwitchCase="'Maple Valley'">Maple Valley</h3>
+  <h3 *ngSwitchCase="'Persimmon Creek'">Persimmon Creek</h3>
+  <h3 *ngSwitchCase="'Oaklands'">Oaklands</h3>
+  <h3 *ngSwitchCase="'Yorklyn'">Yorklyn</h3>
+  <h3 *ngSwitchCase="'Bear-Glasgow Y'">Bear-Glasgow Y</h3>
+  <h3 *ngSwitchCase="'Penn Acres'">Penn Acres</h3>
+  <h3 *ngSwitchCase="'Arundel'">Arundel</h3>
+  <h3 *ngSwitchCase="'Crestmoor'">Crestmoor</h3>
+  <h3 *ngSwitchCase="'Drummond Hill'">Drummond Hill</h3>
+  <h3 *ngSwitchCase="'Oakwood Valley'">Oakwood Valley</h3>
+  <h3 *ngSwitchCase="'Sherwood Park'">Sherwood Park</h3>
+  <h3 *ngSwitchCase="'Valleybrook'">Valleybrook</h3>
   <h3 *ngSwitchDefault=""></h3>
 </div>
 <br />
