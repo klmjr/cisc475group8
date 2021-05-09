@@ -27,7 +27,21 @@ WHITE = 1
 BLUE = 2
 
 class Blue():
-    
+    def prep_final_pairings(self, data): 
+        if not("white_to_blue" in data.changed_division): 
+            return 
+        blue = [x for x in data.blue_div] 
+
+        changed_index = 0 
+        tmp_teaminfo = [] 
+        for i in range(len(blue)): 
+            if (blue[i]['team'] == data.changed_division['white_to_blue']): 
+                changed_index = i 
+                tmp_teaminfo = blue[i] 
+                break 
+        del blue[changed_index] 
+        data.blue_div = [tmp_teaminfo] + blue # put the team that changed divisions at the front of the list 
+
     def gen_final_pairings(self, data): 
         # Make deep copies of sorted win-loss ratio of prior years 
         blue = [x for x in data.blue_div] 
@@ -36,12 +50,6 @@ class Blue():
         
         best_of_blue = blue[0]['team']
         worst_of_white = white[-1]['team'] 
-        """  
-        i = 0 
-        while (white[-1 - i]['team'] ==  data.changed_division['red_to_white']): 
-            i++
-            worst_of_white = white[-1-i]['team']
-        """ 
         pairings.append((best_of_blue, worst_of_white)) 
 
         del blue[0] 
@@ -76,27 +84,27 @@ class Blue():
         
         
 
-class Red(): 
+class Red():
+    def prep_final_pairings(self, data): 
+        if not("white_to_red" in data.changed_division): 
+            return 
+        red = [x for x in data.red_div] 
+
+        changed_index = 0 
+        tmp_teaminfo = [] 
+        for i in range(len(red)): 
+            if (red[i]['team'] == data.changed_division['white_to_red']): 
+                changed_index = i 
+                tmp_teaminfo = red[i] 
+                break 
+        del red[changed_index] 
+        data.red_div = red + [tmp_teaminfo] # put the team that changed divisions at the back of the list 
     def gen_final_pairings(self, data): 
         # Make deep copies of win-loss ratios 
         red = [x for x in data.red_div] 
         white = [x for x in data.white_div] 
-
-        changed_index = 0 
-
-        for i in range(len(red)): 
-            if (red[i]['team'] == data.changed_division['white_to_red']): 
-                changed_index = i 
-                break 
         pairings = [] 
-        
-        best_of_white = white[0]['team']
-
-        pairings.append((red[changed_index]['team'], best_of_white)) 
-
-        del red[changed_index] 
-
-        for i in range(0, len(red), 2): 
+        for i in range(0, len(red)-1, 2): 
             pairings.append((red[i]['team'], red[i + 1]['team'])) 
 
         for pairing in pairings: 
@@ -122,9 +130,40 @@ class Red():
         return first_cond or second_cond
 
 class White():
+    def prep_final_pairings(self, data): 
+        white = [x for x in data.white_div]
+        
+        if ("red_to_white" in data.changed_division): 
+            changed_index = 0 
+            tmp_teaminfo = [] 
+            for i in range(len(white)): 
+                if (white[i]['team'] == data.changed_division['red_to_white']): 
+                    tmp_teaminfo = white[i] 
+                    del white[i] 
+                    white = [tmp_teaminfo] + white
+                    break 
+        
+        if ("blue_to_white" in data.changed_division): 
+            changed_index = 0 
+            tmp_teaminfo = [] 
+            for i in range(len(white)): 
+                if (white[i]['team'] == data.changed_division['blue_to_white']): 
+                    tmp_teaminfo = white[i] 
+                    del white[i] 
+                    white = white + [tmp_teaminfo] 
+                    break
+        data.white_div = white 
+
+
     def gen_final_pairings(self, data): 
         white = [x for x in data.white_div] 
+        
+        best_of_white = white[0]['team'] 
+        worst_of_white = white[-1]['team'] 
 
+        data.solver.add(getTeam(data.games[best_of_white][-1]) == data.red_div[-1]['team']) 
+        data.solver.add(getTeam(data.games[worst_of_white][-1]) == data.blue_div[0]['team']) 
+        
         del white[0] 
         del white[-1]
         
@@ -225,9 +264,12 @@ class TeamGenerator():
         self.saturday_meets()
           
         self.intradivision_games()
-        self.first_saturday_crossovers()  
+        self.first_saturday_crossovers() 
+        self.consecutive_away_meets() 
     def saturday_meets(self): 
         # Schedule the last saturday 
+        for division in self.data.divisions: 
+            division.prep_final_pairings(self.data)
         for division in self.data.divisions: 
             division.gen_final_pairings(self.data) 
 
@@ -245,7 +287,8 @@ class TeamGenerator():
         for division in self.data.divisions: 
             division.intradivision_games(self.data) 
     def first_saturday_crossovers(self): 
-         
+        # ensure teams are in opposing divisions         
+        """ 
         for team in range(len(self.data.games)): 
             game = self.data.games[team][0] # The first game in the season 
             if (team in range(self.data.red_indices[0], self.data.red_indices[1] + 1)): 
@@ -261,7 +304,71 @@ class TeamGenerator():
                 blue_opp = z3.And(opponent <= self.data.blue_indices[1], opponent >= self.data.blue_indices[0])
                 red_opp = z3.And(opponent <= self.data.red_indices[1], opponent >= self.data.red_indices[0])
                 self.data.solver.add(z3.Or(blue_opp, red_opp)) 
-          
+        """ 
+        # Each team has 6 teams it can play (this is an approximation i'm making based on strongest teams) 
+        # The 3 from each division that are closest in ranking 
+        # Take the sorted win loss ratios and pair them with the teams closest to their index 
+        
+        for index in range(len(self.data.blue_div)): 
+            # For the red division, the high priority competitors are those who are at the same index 
+            # or competitiveness as the team in the red division. 
+            possible_opponents = [] # The goal through rearrangement should be a sorted list of opponents 
+            team = self.data.blue_div[index]['team'] 
+            high_priori_white = self.data.white_div[index:] 
+            low_priori_white = self.data.white_div[:index] 
+            high_priori_red = self.data.red_div[index:] 
+            low_priori_red = self.data.red_div[:index] 
+
+            possible_opponents += high_priori_white + high_priori_red 
+            for i in range(len(possible_opponents)): 
+                opp = possible_opponents[i]['team']  
+                if (opp in range(self.data.red_indices[0], self.data.red_indices[1] + 1)):
+                    weight = "1" 
+                else: 
+                    weight = "2" 
+
+                self.data.solver.add_soft(getTeam(self.data.games[team][0]) == opp, weight=f"(len(possible_opponents)-i)*10") 
+                self.data.solver.add(getTeam(self.data.games[team][0]) != -1)     
+        for index in range(len(self.data.red_div)): 
+            # For the red division, the high priority competitors are those who are at the same index 
+            # or competitiveness as the team in the red division. 
+            possible_opponents = [] # The goal through rearrangement should be a sorted list of opponents 
+            team = self.data.red_div[index]['team'] 
+            high_priori_white = self.data.white_div[index:] 
+            low_priori_white = self.data.white_div[:index] 
+            high_priori_blue = self.data.blue_div[index:] 
+            low_priori_blue = self.data.blue_div[:index] 
+
+            possible_opponents += high_priori_white + high_priori_blue# + low_priori_blue 
+            print(possible_opponents, self.data.red_div[index])
+            for i in range(len(possible_opponents)): 
+                opp = possible_opponents[i]['team']
+                self.data.solver.add_soft(getTeam(self.data.games[team][0]) == opp,weight=f"(len(possible_opponents) - i)*10") 
+                self.data.solver.add(getTeam(self.data.games[team][0]) != -1)     
+        for index in range(len(self.data.white_div)): 
+            # For the red division, the high priority competitors are those who are at the same index 
+            # or competitiveness as the team in the red division. 
+            possible_opponents = [] # The goal through rearrangement should be a sorted list of opponents 
+            team = self.data.white_div[index]['team'] 
+            high_priori_red = self.data.red_div[index:] 
+            low_priori_red = self.data.red_div[:index] 
+            high_priori_blue = self.data.blue_div[index:] 
+            low_priori_blue = self.data.blue_div[:index] 
+
+            possible_opponents += high_priori_red + high_priori_blue# + low_priori_blue 
+            for i in range(len(possible_opponents)): 
+                opp = possible_opponents[i]['team']
+                self.data.solver.add_soft(getTeam(self.data.games[team][0]) == opp,weight=f"(len(possible_opponents) - i)*10") 
+                self.data.solver.add(getTeam(self.data.games[team][0]) != -1)     
+
+    def consecutive_away_meets(self): 
+        for team in self.data.games: 
+            for i in range(len(team) - 3):
+                consecutive_homes = z3.And(getHome(team[i]) == 1, getHome(team[i + 1]) == 1, getHome(team[i + 2]) == 1)
+                consecutive_aways = z3.And(getHome(team[i]) == 0, getHome(team[i + 1]) == 0, getHome(team[i + 2]) == 0)
+
+                self.data.solver.add(z3.If(consecutive_homes, getHome(team[i + 3]) == 0, True)) 
+                self.data.solver.add(z3.If(consecutive_aways, getHome(team[i + 3]) == 1, True)) 
 
 #Get home 
 # Input: a Symbolic Variable or an Int 
@@ -277,11 +384,9 @@ def getTeam(team):
 
 
 def print_game_model(data): 
-    print("here1") 
     if (data.solver.check() != z3.sat): 
         print("Houston... we have a problem") 
         return -1
-    print("here2") 
     model = data.solver.model() 
     solution_games = [[model[data.games[team][game]].as_long() for game in range(data.num_games)] for team in range(data.num_teams)] 
     
@@ -289,6 +394,7 @@ def print_game_model(data):
     for i in range(data.num_games): 
         line1 += f"Game{i}" + " "*8 
     print(line1) 
+    print("RED") 
     for team in range(data.num_teams):
         if (team != 2147483647): 
             line = f"{team} {teams_list[team][:9]}" 
@@ -322,6 +428,12 @@ def print_game_model(data):
         line = line.ljust(13*(data.num_games + 1) , " ") + f"{home_count}"
         line = line.ljust(len(line) + 5, " ") + f"{saturday_home_count}" 
         print(line) 
+        if (team == data.red_indices[1]): 
+            print("") 
+            print("WHITE") 
+        elif (team == data.white_indices[1]): 
+            print("") 
+            print("BLUE") 
 def print_json(data): 
     print("here1")  
     if (data.solver.check() != z3.sat): 
