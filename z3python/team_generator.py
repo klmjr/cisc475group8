@@ -11,7 +11,7 @@ Since z3 handles integers better than strings, we will define all of the string 
 
 ## No Team: For different iterations of the solver, it may be best to let the solver not place a team. In that case we reserve -1 to be that teams number. 
 
-TEAM = -1 
+TEAM_TBD = -1 
 
 # PLAN: 
 """ 
@@ -129,6 +129,7 @@ class Red():
         second_cond = (team2 in range(start, end + 1) and not(team1 in range(start, end + 1))) 
         return first_cond or second_cond
 
+
 class White():
     def prep_final_pairings(self, data): 
         white = [x for x in data.white_div]
@@ -190,6 +191,7 @@ class White():
         second_cond = (team2 in range(start, end + 1) and not(team1 in range(start, end + 1))) 
         return first_cond or second_cond
 
+
 class Data(): 
     def __init__(self, num_games, num_teams, wins_losses, red, white, blue, changed, saturdays):
         self.num_games = num_games 
@@ -217,17 +219,17 @@ class Data():
     #       * Team: Var >> 1 (Bit-Shift right) 
     #       * Home?: Var & 1 (Bit-wise AND with 1) 
     def generate_variables(self, num_games, num_teams): 
-        # Each row in the 2 x 2 array is the list of opponents for the team the rows correspond to 
+        # Generates variable space for Z3 to work on as a num_team by num_games matrix
         games = [[z3.BitVec(f"Team_{i}_Game_{j}", 32) for j in range(1, num_games + 1)] for i in range(num_teams)]
-        
+	# Starts the Z3 contraint solver as an Optimizer
         s = z3.Optimize() 
 
         # Each row must have a valid team 
         for team in range(num_teams):
             opponents = games[team] # Get the opponents for the team
             for opp in opponents: 
-                s.add(z3.And(getTeam(opp) < num_teams, getTeam(opp) >= -1 )) # Team in a valid range 
-                s.add((opp >> 1) != team) # Team can't play themselves 
+                s.add(z3.And(getTeam(opp) < num_teams, getTeam(opp) >= TEAM_TBD )) # Team in a valid range 
+                s.add( getTeam(opp) != team) # Team can't play themselves 
         
         # Handle Distinct opponents 
         for team_opps in games: 
@@ -235,7 +237,7 @@ class Data():
             count = 0
             for opp in team_opps: 
                 opponent_teams.append(getTeam(opp)) 
-                count += z3.If(getTeam(opp)== -1, 1, 0 ) 
+                count += z3.If(getTeam(opp)== TEAM_TBD, 1, 0 ) 
             s.add(z3.Or(z3.Distinct(opponent_teams), count > 1 ))  
         # Commutativity of opponents and home and away basics 
         # This code will look janky, but z3 variables can't be used as python list indices
@@ -255,9 +257,11 @@ class Data():
             for game in team: 
                 sums += z3.If(getHome(game) == 1, 1, 0) 
             s.add(sums == 4) 
-
+	# Add the solver and variable space to the Data object
         self.solver = s 
         self.games = games  
+
+
 class TeamGenerator(): 
     def __init__(self, data):
         self.data = data
@@ -266,6 +270,7 @@ class TeamGenerator():
         self.intradivision_games()
         self.first_saturday_crossovers() 
         self.consecutive_away_meets() 
+
     def saturday_meets(self): 
         # Schedule the last saturday 
         for division in self.data.divisions: 
@@ -279,13 +284,12 @@ class TeamGenerator():
             count = 0 
             for day in self.data.saturdays: 
                 count += z3.If(getHome(opponents[day]) == 1, 1, 0) 
-            self.data.solver.add(z3.Or(count == 2, count == 3)) 
-        
-                
-        pass 
+            self.data.solver.add(z3.Or(count == 2, count == 3))
+    
     def intradivision_games(self): 
         for division in self.data.divisions: 
-            division.intradivision_games(self.data) 
+            division.intradivision_games(self.data)
+    
     def first_saturday_crossovers(self): 
         # ensure teams are in opposing divisions         
         """ 
@@ -328,7 +332,7 @@ class TeamGenerator():
                     weight = "2" 
 
                 self.data.solver.add_soft(getTeam(self.data.games[team][0]) == opp, weight=f"(len(possible_opponents)-i)*10") 
-                self.data.solver.add(getTeam(self.data.games[team][0]) != -1)     
+                self.data.solver.add(getTeam(self.data.games[team][0]) != TEAM_TBD)     
         for index in range(len(self.data.red_div)): 
             # For the red division, the high priority competitors are those who are at the same index 
             # or competitiveness as the team in the red division. 
@@ -344,7 +348,7 @@ class TeamGenerator():
             for i in range(len(possible_opponents)): 
                 opp = possible_opponents[i]['team']
                 self.data.solver.add_soft(getTeam(self.data.games[team][0]) == opp,weight=f"(len(possible_opponents) - i)*10") 
-                self.data.solver.add(getTeam(self.data.games[team][0]) != -1)     
+                self.data.solver.add(getTeam(self.data.games[team][0]) != TEAM_TBD)     
         for index in range(len(self.data.white_div)): 
             # For the red division, the high priority competitors are those who are at the same index 
             # or competitiveness as the team in the red division. 
@@ -359,7 +363,7 @@ class TeamGenerator():
             for i in range(len(possible_opponents)): 
                 opp = possible_opponents[i]['team']
                 self.data.solver.add_soft(getTeam(self.data.games[team][0]) == opp,weight=f"(len(possible_opponents) - i)*10") 
-                self.data.solver.add(getTeam(self.data.games[team][0]) != -1)     
+                self.data.solver.add(getTeam(self.data.games[team][0]) != TEAM_TBD)
 
     def consecutive_away_meets(self): 
         for team in self.data.games: 
@@ -450,16 +454,16 @@ def print_json(data):
         for team in range(data.num_teams):
             result = solution_games[team][game]
             result_dict = {} 
-            if (result & 1 == 1): 
+            if ( getHome(result) == 1): 
                 result_dict["Home"] = teams_list[team] 
-                if (result >> 1 in range(20)): 
-                    result_dict["Away"] = teams_list[result >> 1] 
+                if ( getTeam(result) in range(data.num_teams)): 
+                    result_dict["Away"] = teams_list[ getTeam(result) ] 
                 else: 
                     result_dict["Away"] = "TBD" 
             else:
 
-                if (result >> 1 in range(20)): 
-                    result_dict["Home"] = teams_list[result >> 1] 
+                if ( getTeam(result) in range(data.num_teams)): 
+                    result_dict["Home"] = teams_list[ getTeam(result) ] 
                 else: 
                     result_dict["Home"] = "TBD" 
                 result_dict["Away"] = teams_list[team]
@@ -470,7 +474,7 @@ def print_json(data):
             else: 
                 result_dict[teams_list[team]] = "White" 
 
-            opp = result >> 1 
+            opp = getTeam(result)
             
             if (opp in range(data.red_indices[0], data.red_indices[1] + 1)): 
                 result_dict[teams_list[opp]] = "Red" 
