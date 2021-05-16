@@ -1,0 +1,6 @@
+{
+    "python.pythonPath": "C:\\Users\\kjmas\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+    "python.analysis.extraPaths": [
+        "C:\\Users\\kjmas\\ssl-calendar\\z3python"
+    ]
+}

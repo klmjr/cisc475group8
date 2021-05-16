@@ -1,6 +1,7 @@
 import z3
 from itertools import product 
 from swim_data import wins_and_losses, teams as teams_list, changed 
+import json
 # Definition of Constants 
 """ 
 Since z3 handles integers better than strings, we will define all of the string constants as integers
@@ -438,6 +439,8 @@ def print_game_model(data):
         elif (team == data.white_indices[1]): 
             print("") 
             print("BLUE") 
+
+
 def print_json(data): 
     print("here1")  
     if (data.solver.check() != z3.sat): 
@@ -468,32 +471,34 @@ def print_json(data):
                     result_dict["Home"] = "TBD" 
                 result_dict["Away"] = teams_list[team]
             if (team in range(data.red_indices[0], data.red_indices[1] + 1)): 
-                result_dict[teams_list[team]] = "Red" 
+                result_dict["home_division"] = "Red" 
             elif (team in range(data.blue_indices[0], data.blue_indices[1] + 1)): 
-                result_dict[teams_list[team]] = "Blue" 
+                result_dict["home_division"] = "Blue" 
             else: 
-                result_dict[teams_list[team]] = "White" 
+                result_dict["home_division"] = "White" 
 
             opp = getTeam(result)
             
             if (opp in range(data.red_indices[0], data.red_indices[1] + 1)): 
-                result_dict[teams_list[opp]] = "Red" 
+                result_dict["away_division"] = "Red" 
             elif (opp in range(data.blue_indices[0], data.blue_indices[1] + 1)): 
-                result_dict[teams_list[opp]] = "Blue" 
+                result_dict["away_division"] = "Blue" 
             elif (opp in range(data.white_indices[0], data.white_indices[1] + 1)): 
-                result_dict[teams_list[opp]] = "White"
+                result_dict["away_division"] = "White"
             else: 
                 result_dict["TBD"] = "No div"
             teams.append(result_dict) 
 
         games[str(game)] = teams
     with open("result.json", "w") as f: 
-        f.write(str(games))
+        json.dump(games,f,indent=4)
+        
 def main(): 
     # There are 8 meets and 20 teams 
     saturdays = [0, 2, 4,5,7] 
     data = Data(8, 20, wins_and_losses,(0, 6), (7, 12), (13, 19), changed, saturdays) 
     team_gen = TeamGenerator(data)
     print_game_model(data) 
+    print_json(data)
 if __name__ == "__main__": 
     main() 

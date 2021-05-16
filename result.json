@@ -1,0 +1,978 @@
+{
+    "0": [
+        {
+            "Home": "Wedgewood",
+            "Away": "North Star",
+            "home_division": "Red",
+            "away_division": "White"
+        },
+        {
+            "Home": "Penn Acres",
+            "Away": "Yorklyn",
+            "home_division": "Red",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Skyline",
+            "Away": "Maple Valley",
+            "home_division": "Red",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Oaklands",
+            "Away": "Westminster",
+            "home_division": "Red",
+            "away_division": "White"
+        },
+        {
+            "Home": "Sherwood Park",
+            "Away": "Delaware Bluefish",
+            "home_division": "Red",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Persimmon Creek",
+            "Away": "Nottingham Green",
+            "home_division": "Red",
+            "away_division": "White"
+        },
+        {
+            "Home": "Western Y",
+            "Away": "Oakwood Valley",
+            "home_division": "Red",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Drummond Hill",
+            "Away": "Crestmoor",
+            "home_division": "White",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Persimmon Creek",
+            "Away": "Nottingham Green",
+            "home_division": "White",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Oaklands",
+            "Away": "Westminster",
+            "home_division": "White",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Fairfield",
+            "Away": "Valleybrook",
+            "home_division": "White",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Wedgewood",
+            "Away": "North Star",
+            "home_division": "White",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Arundel",
+            "Away": "Bear-Glasgow Y",
+            "home_division": "White",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Penn Acres",
+            "Away": "Yorklyn",
+            "home_division": "Blue",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Arundel",
+            "Away": "Bear-Glasgow Y",
+            "home_division": "Blue",
+            "away_division": "White"
+        },
+        {
+            "Home": "Drummond Hill",
+            "Away": "Crestmoor",
+            "home_division": "Blue",
+            "away_division": "White"
+        },
+        {
+            "Home": "Skyline",
+            "Away": "Maple Valley",
+            "home_division": "Blue",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Western Y",
+            "Away": "Oakwood Valley",
+            "home_division": "Blue",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Sherwood Park",
+            "Away": "Delaware Bluefish",
+            "home_division": "Blue",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Fairfield",
+            "Away": "Valleybrook",
+            "home_division": "Blue",
+            "away_division": "White"
+        }
+    ],
+    "1": [
+        {
+            "Home": "North Star",
+            "Away": "Yorklyn",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "North Star",
+            "Away": "Yorklyn",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Skyline",
+            "Away": "Western Y",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Fairfield",
+            "Away": "Westminster",
+            "home_division": "Red",
+            "away_division": "White"
+        },
+        {
+            "Home": "Delaware Bluefish",
+            "Away": "Nottingham Green",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Delaware Bluefish",
+            "Away": "Nottingham Green",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Skyline",
+            "Away": "Western Y",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Oaklands",
+            "Away": "Drummond Hill",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Bear-Glasgow Y",
+            "Away": "Persimmon Creek",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Oaklands",
+            "Away": "Drummond Hill",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Fairfield",
+            "Away": "Westminster",
+            "home_division": "White",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Maple Valley",
+            "Away": "Wedgewood",
+            "home_division": "White",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Bear-Glasgow Y",
+            "Away": "Persimmon Creek",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Arundel",
+            "Away": "Penn Acres",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Arundel",
+            "Away": "Penn Acres",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Crestmoor",
+            "Away": "Valleybrook",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Maple Valley",
+            "Away": "Wedgewood",
+            "home_division": "Blue",
+            "away_division": "White"
+        },
+        {
+            "Home": "Oakwood Valley",
+            "Away": "Sherwood Park",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Oakwood Valley",
+            "Away": "Sherwood Park",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Crestmoor",
+            "Away": "Valleybrook",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        }
+    ],
+    "2": [
+        {
+            "Home": "North Star",
+            "Away": "Western Y",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Yorklyn",
+            "Away": "Skyline",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Yorklyn",
+            "Away": "Skyline",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Nottingham Green",
+            "Away": "Westminster",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Delaware Bluefish",
+            "Away": "Oaklands",
+            "home_division": "Red",
+            "away_division": "White"
+        },
+        {
+            "Home": "Nottingham Green",
+            "Away": "Westminster",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "North Star",
+            "Away": "Western Y",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Bear-Glasgow Y",
+            "Away": "Drummond Hill",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Sherwood Park",
+            "Away": "Persimmon Creek",
+            "home_division": "White",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Delaware Bluefish",
+            "Away": "Oaklands",
+            "home_division": "White",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Wedgewood",
+            "Away": "Fairfield",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Wedgewood",
+            "Away": "Fairfield",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Bear-Glasgow Y",
+            "Away": "Drummond Hill",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Oakwood Valley",
+            "Away": "Penn Acres",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Valleybrook",
+            "Away": "Arundel",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Crestmoor",
+            "Away": "Maple Valley",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Crestmoor",
+            "Away": "Maple Valley",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Oakwood Valley",
+            "Away": "Penn Acres",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Sherwood Park",
+            "Away": "Persimmon Creek",
+            "home_division": "Blue",
+            "away_division": "White"
+        },
+        {
+            "Home": "Valleybrook",
+            "Away": "Arundel",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        }
+    ],
+    "3": [
+        {
+            "Home": "Drummond Hill",
+            "Away": "North Star",
+            "home_division": "Red",
+            "away_division": "White"
+        },
+        {
+            "Home": "Yorklyn",
+            "Away": "Delaware Bluefish",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Westminster",
+            "Away": "Skyline",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Westminster",
+            "Away": "Skyline",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Yorklyn",
+            "Away": "Delaware Bluefish",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Western Y",
+            "Away": "Nottingham Green",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Western Y",
+            "Away": "Nottingham Green",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Drummond Hill",
+            "Away": "North Star",
+            "home_division": "White",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Wedgewood",
+            "Away": "Persimmon Creek",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Oaklands",
+            "Away": "Crestmoor",
+            "home_division": "White",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Bear-Glasgow Y",
+            "Away": "Fairfield",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Wedgewood",
+            "Away": "Persimmon Creek",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Bear-Glasgow Y",
+            "Away": "Fairfield",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Penn Acres",
+            "Away": "Maple Valley",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Sherwood Park",
+            "Away": "Arundel",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Oaklands",
+            "Away": "Crestmoor",
+            "home_division": "Blue",
+            "away_division": "White"
+        },
+        {
+            "Home": "Penn Acres",
+            "Away": "Maple Valley",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Valleybrook",
+            "Away": "Oakwood Valley",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Sherwood Park",
+            "Away": "Arundel",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Valleybrook",
+            "Away": "Oakwood Valley",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        }
+    ],
+    "4": [
+        {
+            "Home": "Nottingham Green",
+            "Away": "North Star",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Westminster",
+            "Away": "Yorklyn",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Skyline",
+            "Away": "Bear-Glasgow Y",
+            "home_division": "Red",
+            "away_division": "White"
+        },
+        {
+            "Home": "Westminster",
+            "Away": "Yorklyn",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Western Y",
+            "Away": "Delaware Bluefish",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Nottingham Green",
+            "Away": "North Star",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Western Y",
+            "Away": "Delaware Bluefish",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Drummond Hill",
+            "Away": "Wedgewood",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Persimmon Creek",
+            "Away": "Oaklands",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Persimmon Creek",
+            "Away": "Oaklands",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Oakwood Valley",
+            "Away": "Fairfield",
+            "home_division": "White",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Drummond Hill",
+            "Away": "Wedgewood",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Skyline",
+            "Away": "Bear-Glasgow Y",
+            "home_division": "White",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Penn Acres",
+            "Away": "Valleybrook",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Maple Valley",
+            "Away": "Arundel",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Sherwood Park",
+            "Away": "Crestmoor",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Maple Valley",
+            "Away": "Arundel",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Oakwood Valley",
+            "Away": "Fairfield",
+            "home_division": "Blue",
+            "away_division": "White"
+        },
+        {
+            "Home": "Sherwood Park",
+            "Away": "Crestmoor",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Penn Acres",
+            "Away": "Valleybrook",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        }
+    ],
+    "5": [
+        {
+            "Home": "North Star",
+            "Away": "Skyline",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Yorklyn",
+            "Away": "Western Y",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "North Star",
+            "Away": "Skyline",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Westminster",
+            "Away": "Delaware Bluefish",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Westminster",
+            "Away": "Delaware Bluefish",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Nottingham Green",
+            "Away": "Drummond Hill",
+            "home_division": "Red",
+            "away_division": "White"
+        },
+        {
+            "Home": "Yorklyn",
+            "Away": "Western Y",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Nottingham Green",
+            "Away": "Drummond Hill",
+            "home_division": "White",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Persimmon Creek",
+            "Away": "Penn Acres",
+            "home_division": "White",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Fairfield",
+            "Away": "Oaklands",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Fairfield",
+            "Away": "Oaklands",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Bear-Glasgow Y",
+            "Away": "Wedgewood",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Bear-Glasgow Y",
+            "Away": "Wedgewood",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Persimmon Creek",
+            "Away": "Penn Acres",
+            "home_division": "Blue",
+            "away_division": "White"
+        },
+        {
+            "Home": "Arundel",
+            "Away": "Crestmoor",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Arundel",
+            "Away": "Crestmoor",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Maple Valley",
+            "Away": "Oakwood Valley",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Maple Valley",
+            "Away": "Oakwood Valley",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Valleybrook",
+            "Away": "Sherwood Park",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Valleybrook",
+            "Away": "Sherwood Park",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        }
+    ],
+    "6": [
+        {
+            "Home": "North Star",
+            "Away": "Westminster",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Nottingham Green",
+            "Away": "Yorklyn",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Delaware Bluefish",
+            "Away": "Skyline",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "North Star",
+            "Away": "Westminster",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Delaware Bluefish",
+            "Away": "Skyline",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Nottingham Green",
+            "Away": "Yorklyn",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Western Y",
+            "Away": "Bear-Glasgow Y",
+            "home_division": "Red",
+            "away_division": "White"
+        },
+        {
+            "Home": "Drummond Hill",
+            "Away": "Fairfield",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Persimmon Creek",
+            "Away": "Valleybrook",
+            "home_division": "White",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Wedgewood",
+            "Away": "Oaklands",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Drummond Hill",
+            "Away": "Fairfield",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Wedgewood",
+            "Away": "Oaklands",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Western Y",
+            "Away": "Bear-Glasgow Y",
+            "home_division": "White",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Crestmoor",
+            "Away": "Penn Acres",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Oakwood Valley",
+            "Away": "Arundel",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Crestmoor",
+            "Away": "Penn Acres",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Maple Valley",
+            "Away": "Sherwood Park",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Oakwood Valley",
+            "Away": "Arundel",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Maple Valley",
+            "Away": "Sherwood Park",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Persimmon Creek",
+            "Away": "Valleybrook",
+            "home_division": "Blue",
+            "away_division": "White"
+        }
+    ],
+    "7": [
+        {
+            "Home": "Delaware Bluefish",
+            "Away": "North Star",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Yorklyn",
+            "Away": "Drummond Hill",
+            "home_division": "Red",
+            "away_division": "White"
+        },
+        {
+            "Home": "Skyline",
+            "Away": "Nottingham Green",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Westminster",
+            "Away": "Western Y",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Delaware Bluefish",
+            "Away": "North Star",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Skyline",
+            "Away": "Nottingham Green",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Westminster",
+            "Away": "Western Y",
+            "home_division": "Red",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Yorklyn",
+            "Away": "Drummond Hill",
+            "home_division": "White",
+            "away_division": "Red"
+        },
+        {
+            "Home": "Fairfield",
+            "Away": "Persimmon Creek",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Oaklands",
+            "Away": "Bear-Glasgow Y",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Fairfield",
+            "Away": "Persimmon Creek",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Arundel",
+            "Away": "Wedgewood",
+            "home_division": "White",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Oaklands",
+            "Away": "Bear-Glasgow Y",
+            "home_division": "White",
+            "away_division": "White"
+        },
+        {
+            "Home": "Penn Acres",
+            "Away": "Sherwood Park",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Arundel",
+            "Away": "Wedgewood",
+            "home_division": "Blue",
+            "away_division": "White"
+        },
+        {
+            "Home": "Crestmoor",
+            "Away": "Oakwood Valley",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Valleybrook",
+            "Away": "Maple Valley",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Crestmoor",
+            "Away": "Oakwood Valley",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Penn Acres",
+            "Away": "Sherwood Park",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        },
+        {
+            "Home": "Valleybrook",
+            "Away": "Maple Valley",
+            "home_division": "Blue",
+            "away_division": "Blue"
+        }
+    ]
+}
