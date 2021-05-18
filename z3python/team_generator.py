@@ -450,30 +450,31 @@ def print_json(data):
     model = data.solver.model() 
     solution_games = [[model[data.games[team][game]].as_long() for game in range(data.num_games)] for team in range(data.num_teams)] 
     
-    games = {}
+    events = {}
     
     for game in range(data.num_games): 
         teams = []  
         for team in range(data.num_teams):
             result = solution_games[team][game]
+           
             result_dict = {} 
             if ( getHome(result) == 1): 
                 result_dict["Home"] = teams_list[team] 
                 if ( getTeam(result) in range(data.num_teams)): 
-                    result_dict["Away"] = teams_list[ getTeam(result) ] 
+                    result_dict["Away"]= teams_list[ getTeam(result) ] 
                 else: 
-                    result_dict["Away"] = "TBD" 
+                    result_dict["Away"]= "TBD" 
             else:
 
                 if ( getTeam(result) in range(data.num_teams)): 
                     result_dict["Home"] = teams_list[ getTeam(result) ] 
                 else: 
-                    result_dict["Home"] = "TBD" 
+                   result_dict["Home"] = "TBD" 
                 result_dict["Away"] = teams_list[team]
             if (team in range(data.red_indices[0], data.red_indices[1] + 1)): 
                 result_dict["home_division"] = "Red" 
             elif (team in range(data.blue_indices[0], data.blue_indices[1] + 1)): 
-                result_dict["home_division"] = "Blue" 
+                result_dict["home_division"]= "Blue" 
             else: 
                 result_dict["home_division"] = "White" 
 
@@ -487,12 +488,19 @@ def print_json(data):
                 result_dict["away_division"] = "White"
             else: 
                 result_dict["TBD"] = "No div"
+            result_dict["Title"] = result_dict["Home"] + " vs " + result_dict["Away"]
+            
+           
+           
+           
+            result_dict["Week"] = str(game)
+            
             teams.append(result_dict) 
 
-        games[str(game)] = teams
+        events["event_week_" + str(game)] = teams
     with open("result.json", "w") as f: 
-        json.dump(games,f,indent=4)
-        
+        json.dump(events,f,indent=4)
+
 def main(): 
     # There are 8 meets and 20 teams 
     saturdays = [0, 2, 4,5,7] 
