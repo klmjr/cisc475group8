@@ -455,6 +455,8 @@ def print_json(data):
     for game in range(data.num_games): 
         teams = []  
         for team in range(data.num_teams):
+            if(team == 10):
+                break
             result = solution_games[team][game]
            
             result_dict = {} 
@@ -495,9 +497,8 @@ def print_json(data):
            
             result_dict["Week"] = str(game)
             
-            teams.append(result_dict) 
-
-        events["event_week_" + str(game)] = teams
+            events["eventTeam"+str(team)+"Game"+str(game)] = result_dict
+    
     with open("result.json", "w") as f: 
         json.dump(events,f,indent=4)
 
