@@ -1,6 +1,7 @@
 import z3
-from ssl_excel_parser import parse_excel_two
-from itertools import product 
+from ssl_excel_parser import parse_excel_two, write_excel
+from itertools import product
+import random 
 #from swim_data import wins_and_losses, teams as teams_list, changed 
 # Definition of Constants 
 """ 
@@ -55,7 +56,7 @@ class Blue():
 
         del blue[0] 
 
-        for i in range(0, len(blue), 2): 
+        for i in range(0, len(blue)-1, 2): 
             pairings.append((blue[i]['team'], blue[i + 1]['team'])) 
 
         for pairing in pairings: 
@@ -85,6 +86,10 @@ class Blue():
         
         
 
+class ByeData(): 
+    def __init__(self, num_byes, targets): 
+        self.num_byes = num_byes 
+        self.targets = targets 
 class Red():
     def prep_final_pairings(self, data): 
         if not("white_to_red" in data.changed_division): 
@@ -170,7 +175,7 @@ class White():
         del white[-1]
         
         pairings = [] 
-        for i in range(0, len(white), 2): 
+        for i in range(0, len(white)-1, 2): 
            pairings.append((white[i]['team'], white[i + 1]['team'])) 
 
         for pairing in pairings: 
@@ -194,7 +199,7 @@ class White():
 
 
 class Data(): 
-    def __init__(self, num_games, num_teams, wins_losses, red, white, blue, changed, saturdays, home_away):
+    def __init__(self, num_games, num_teams, wins_losses, red, white, blue, changed, saturdays, home_away, byes):
         self.num_games = num_games 
         self.num_teams = num_teams
         self.wins_losses = wins_losses 
@@ -205,6 +210,7 @@ class Data():
         self.saturdays = saturdays
         self.prev_home_away = home_away
         self.correct_home = None 
+        self.byes = byes
         self.red_div = sorted(wins_losses[red[0]:red[1] + 1], key=lambda team: team['ratio'][0])[::-1] 
         self.blue_div = sorted(wins_losses[blue[0]:blue[1] + 1], key=lambda team: team['ratio'][0])[::-1] 
         self.white_div = sorted(wins_losses[white[0]:white[1] + 1], key=lambda team: team['ratio'][0])[::-1]  
@@ -268,12 +274,36 @@ class Data():
 class TeamGenerator(): 
     def __init__(self, data):
         self.data = data
-        self.saturday_meets()
+
+        if not(self.data.byes): 
+            self.saturday_meets()
           
-        self.intradivision_games()
-        self.first_saturday_crossovers() 
+            self.intradivision_games()
+            self.first_saturday_crossovers() 
+        else: 
+            self.bye_saturday_meets() 
+            self.bye_intradivision_games() 
+            self.bye_first_saturday_crossovers() 
         self.consecutive_away_meets() 
         self.alternate_home_away() 
+    def bye_saturday_meets(self): 
+        # pick a random team to remove 
+        # remove them from the sorted list 
+        # place them back into the list after it runs 
+        team = random.randint(0, self.data.num_teams - 1)
+
+        while (True): 
+            changed = [] 
+            for key, value in self.data.changed_division.items(): 
+                changed.append(value) 
+            if not(team in changed): 
+                break 
+            team = random.randint(0, self.data.num_teams-1)
+        pass 
+    def bye_intradivision_games(self): 
+        pass 
+    def bye_first_saturday_crossovers(self): 
+        pass 
     def saturday_meets(self): 
         # Schedule the last saturday 
         for division in self.data.divisions: 
@@ -327,7 +357,7 @@ class TeamGenerator():
             high_priori_red = self.data.red_div[index:] 
             low_priori_red = self.data.red_div[:index] 
 
-            possible_opponents += high_priori_white + high_priori_red 
+            possible_opponents += high_priori_white + high_priori_red + low_priori_white  
             opps_cond = False 
             for i in range(len(possible_opponents)): 
                 opp = possible_opponents[i]['team']  
@@ -344,7 +374,7 @@ class TeamGenerator():
             high_priori_blue = self.data.blue_div[index:] 
             low_priori_blue = self.data.blue_div[:index] 
 
-            possible_opponents += high_priori_white + high_priori_blue + low_priori_blue 
+            possible_opponents += high_priori_white + high_priori_blue + low_priori_red
             print(possible_opponents, self.data.red_div[index])
             opps_cond = False
             for i in range(len(possible_opponents)): 
@@ -362,7 +392,7 @@ class TeamGenerator():
             high_priori_blue = self.data.blue_div[index:] 
             low_priori_blue = self.data.blue_div[:index] 
 
-            possible_opponents += high_priori_red + high_priori_blue# + low_priori_blue 
+            possible_opponents += high_priori_red + high_priori_blue + low_priori_red 
             opps_cond = False 
             for i in range(len(possible_opponents)): 
                 opp = possible_opponents[i]['team']
@@ -383,10 +413,11 @@ class TeamGenerator():
         
         for team in range(len(self.data.prev_home_away)): 
             for game in range(len(self.data.prev_home_away[team])): 
-                if (team == 0 and game == 0): 
-                    correct_home_away = z3.If(self.data.prev_home_away[team][game] ^ 1 == getHome(self.data.games[team][game]), 1, 0) 
-                else: 
-                    correct_home_away += z3.If(self.data.prev_home_away[team][game] ^ 1 == getHome(self.data.games[team][game]), 1, 0) 
+                if (self.data.prev_home_away[team][game] != -1): 
+                    if (team == 0 and game == 0): 
+                        correct_home_away = z3.If(self.data.prev_home_away[team][game] ^ 1 == getHome(self.data.games[team][game]), 1, 0) 
+                    else: 
+                        correct_home_away += z3.If(self.data.prev_home_away[team][game] ^ 1 == getHome(self.data.games[team][game]), 1, 0) 
         self.data.solver.add(correct_home == correct_home_away) 
         h = self.data.solver.maximize(correct_home) 
         self.data.correct_home = (correct_home, h) 
@@ -509,13 +540,24 @@ def print_json(data):
         games[str(game)] = teams
     with open("result.json", "w") as f: 
         f.write(str(games))
-def make_me_schedule(wins_and_losses, teams, changed, prev_home_away, red_indices, white_indices, blue_indices): 
+
+def write_to_excel(teams, data, dates, wl): 
+    if (data.solver.check() != z3.sat): 
+        print("Oh no") 
+    model = data.solver.model() 
+
+    solution_games = [[model[data.games[team][game]].as_long() for game in range(data.num_games)] for team in range(data.num_teams)] 
+    
+    indices = {"red": data.red_indices, "white": data.white_indices, "blue":data.blue_indices} 
+    write_excel(2020, None, dates, solution_games, teams, indices, wl)  
+def make_me_schedule(wins_and_losses, teams, changed, prev_home_away, red_indices, white_indices, blue_indices, byes, dates): 
 
     saturdays = [0, 2, 4,5,7]
     print(changed) 
-    data = Data(8, len(teams), wins_and_losses,red_indices, white_indices, blue_indices, changed, saturdays, prev_home_away) 
+    data = Data(8, len(teams), wins_and_losses,red_indices, white_indices, blue_indices, changed, saturdays, prev_home_away, byes) 
     team_gen = TeamGenerator(data)
-    print_game_model(data, teams) 
+    write_to_excel(teams, data, dates, data.wins_losses) 
+    #print_game_model(data, teams) 
 def main(): 
     wins_and_losses, teams, changed, prev_home_away, red_indices, white_indices, blue_indices = parse_excel_two() 
     # There are 8 meets and 20 teams 

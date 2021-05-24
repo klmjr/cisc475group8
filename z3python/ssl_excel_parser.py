@@ -3,15 +3,128 @@ import pandas as pd
 from copy import deepcopy 
 import xlrd 
 import xlwt 
+import calendar 
 # Read Previous Years Division Bye Numbers and Update the file to Hold this years Bye and return a Dictionary of the number of Byes 
 # For each Division 
 def getCurrentYearByes(filename, year): 
     pass
 # Read which teams have not had a bye in the past few years 
 # Return them to be targeted by the solver 
-def getPossibleTeams(filename, year): 
-    pass
+def getPossibleTeams(filename, year, team_names, sheet): 
+    # first get the correct year
+    
+    wb = xlrd.open_workbook(filename)
+    sheet = wb.sheet_by_name(sheet) 
+    
+    year_start = 4 
+    year_start_col = 2 
 
+    
+
+    # then find the teams that haven't had a bye in the past few years and append them to an array 
+
+    
+def write_excel(year, directory, dates, model, teams, indices, win_loss): 
+    wb = xlwt.Workbook() 
+    sheet = wb.add_sheet("New schedule") 
+
+    curr_index = 0 
+    start_index = 7 
+    #print(dates)
+    
+    weekdays = [] 
+
+    for c in dates: 
+        month, day, year = c.split("/")
+        month = int(month) 
+        day = int(day) 
+        year = int(year) 
+        weekdays.append(calendar.day_name[calendar.weekday(year, month, day)] )
+
+    sheet.write(6, 1, "RED")
+    curr_index = 7 
+    date_index = 0 
+    for col in range(ord("E")-ord("A"), ord("S")-ord("A")+1, 2): 
+        sheet.write(4, col, weekdays[date_index])
+        sheet.write(5, col, dates[date_index]) 
+        date_index += 1 
+    for i in range(indices["red"][0], indices["red"][1] + 1): 
+        sheet.write(curr_index, 1, teams[i])
+        sheet.write(curr_index, 0, str(i))
+        w, l = win_loss[i]["ratio"] 
+        win_loss_string = f"{w}-{l}"
+        sheet.write(curr_index, 2, win_loss_string)
+        model_col = 0 
+        home_count = 0
+        for col in range(ord("E")-ord("A"), ord("S")-ord("A")+1, 2): 
+            if (model[i][model_col] & 1 == 1): 
+                write_here = f"{i}-{model[i][model_col] >> 1}"
+                home_count += 1 
+            else: 
+                write_here = f"{model[i][model_col] >> 1}-{i}" 
+            if (model[i][model_col] >> 1 not in range(indices["red"][0], indices["red"][1] + 1)):
+                style = xlwt.easyxf("font:color-index red") 
+            else: 
+                style = xlwt.easyxf("font:color-index black") 
+            sheet.write(curr_index, col, write_here, style) 
+            model_col += 1
+        sheet.write(curr_index, ord("S") - ord("A") + 2, str(home_count)) 
+        curr_index += 1 
+    
+    curr_index +=2 
+    sheet.write(curr_index, 1, "WHITE") 
+
+    curr_index += 1 
+    for i in range(indices["white"][0], indices["white"][1] + 1): 
+        sheet.write(curr_index, 1, teams[i])
+        sheet.write(curr_index, 0, str(i))
+        model_col = 0 
+        home_count = 0
+        w, l = win_loss[i]["ratio"] 
+        win_loss_string = f"{w}-{l}"
+        sheet.write(curr_index, 2, win_loss_string)
+        for col in range(ord("E")-ord("A"), ord("S")-ord("A")+1, 2): 
+            if (model[i][model_col] & 1 == 1): 
+                write_here = f"{i}-{model[i][model_col] >> 1}"
+                home_count += 1 
+            else: 
+                write_here = f"{model[i][model_col] >> 1}-{i}" 
+            if (model[i][model_col] >> 1 not in range(indices["white"][0], indices["white"][1] + 1)):
+                style = xlwt.easyxf("font:color-index red") 
+            else: 
+                style = xlwt.easyxf("font:color-index black") 
+            sheet.write(curr_index, col, write_here, style) 
+            model_col += 1
+        sheet.write(curr_index, ord("S") -ord("A") + 2, str(home_count))
+        curr_index += 1 
+
+    
+    curr_index +=2 
+    sheet.write(curr_index, 1, "BLUE") 
+    curr_index += 1 
+    for i in range(indices["blue"][0], indices["blue"][1] + 1): 
+        sheet.write(curr_index, 1, teams[i])
+        sheet.write(curr_index, 0, str(i))
+        model_col = 0 
+        home_count = 0 
+        w, l = win_loss[i]["ratio"] 
+        win_loss_string = f"{w}-{l}"
+        sheet.write(curr_index, 2, win_loss_string)
+        for col in range(ord("E")-ord("A"), ord("S")-ord("A")+1, 2): 
+            if (model[i][model_col] & 1 == 1): 
+                write_here = f"{i}-{model[i][model_col] >> 1}"
+                home_count +=1  
+            else: 
+                write_here = f"{model[i][model_col] >> 1}-{i}" 
+            if (model[i][model_col] >> 1 not in range(indices["blue"][0], indices["blue"][1] + 1)):
+                style = xlwt.easyxf("font:color-index red") 
+            else: 
+                style = xlwt.easyxf("font:color-index black") 
+            sheet.write(curr_index, col, write_here, style) 
+            model_col += 1 
+        sheet.write(curr_index, ord("S") - ord("A") + 2, str(home_count)) 
+        curr_index += 1 
+    wb.save("test.xls") 
 # After the solver has determined which teams have had a bye, update the spreadsheet to indicate those teams had a bye this year
 def updateTeamByes(filename, year): 
     pass 
@@ -143,13 +256,17 @@ def getHomeAway(previous_year_file, sheetname):
             curr_row = rows_w_teams[i] 
             val = sheet.cell(curr_row, col).value
             if ("BYE" in val):
+                home_and_away[i][curr_index] = -1 
                 continue 
             first = int(val.replace(" ", "").split('-')[0])
             curr_team = int(sheet.cell(curr_row, 0).value) 
             if (first == curr_team):
                 home_and_away[i][curr_index] = 1
-        curr_index += 1 
-    return {"teams": teams, "indices": {"red": red_indices, "white":white_indices, "blue": blue_indices}, "home_and_away": home_and_away}
+        curr_index += 1
+    home_away_map = {} 
+    for i in range(len(home_and_away)): 
+        home_away_map[teams[i].replace("*", "")] = home_and_away[i]
+    return {"teams": teams, "indices": {"red": red_indices, "white":white_indices, "blue": blue_indices}, "home_and_away": home_away_map}
 def parse_excel(filename): 
   # append first three cols that have team name, number, and win ratio
   cols = ["A", "B", "C"]
@@ -392,6 +509,12 @@ def updateTeams(teams_to_add, teams_to_delete, data):
 def parse_excel_two(): 
     curr_result = getTeams("2019_schedule.xls", "Odd year template") 
     prev_result = getHomeAway("2018_schedule.xls", "Odd year template") 
+    
     changed = getChanged(curr_result["changed"], curr_result["teams"], prev_result["teams"], curr_result["indices"], prev_result["indices"])  
 
     return curr_result["wl_ratios"],curr_result["teams"],changed,prev_result["home_and_away"], curr_result["indices"]["red"], curr_result["indices"]["white"], curr_result["indices"]["blue"]    
+
+if __name__ == "__main__": 
+    #getPossibleTeams("crossover_meets_new.xls", 2020, [], "Byes")  
+
+    write_excel(None, None, None, None, None, None) 

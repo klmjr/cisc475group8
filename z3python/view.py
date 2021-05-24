@@ -115,7 +115,7 @@ class AddTeamLine(QWidget):
         self.losses = QComboBox() 
         self.losses.addItems(list(map(str, range(20))))
         self.division = QComboBox()
-        self.division.addItems(["Red", "White", "Blue"]) 
+        self.division.addItems(["RED", "WHITE", "BLUE"]) 
         self.grid = QGridLayout()  
 
         self.grid.addWidget(self.team_name, 0, 0) 
@@ -127,8 +127,8 @@ class AddTeamLine(QWidget):
         new_team = {} 
         new_team["team"] = self.team_name.text() 
         new_team["wins"] = int(self.wins.currentText()) 
-        new_team["losses"] = int(self.wins.currentText()) 
-        new_team["division"] = int(self.wins.currentText())
+        new_team["losses"] = int(self.losses.currentText()) 
+        new_team["division"] = self.division.currentText()
         controller.add_teams.append(new_team)   
 class DeleteTeamLine(QWidget): 
     def __init__(self, parent=None): 
@@ -182,6 +182,7 @@ class AddDeleteTeam(QWidget):
         global widget  
         for widge in self._le: 
             widge.clicked()
+        controller.updateTeams() 
         widget.getNextWindow()
 class SelectFile(QWidget): 
     def __init__(self,name,parent=None): 
@@ -207,12 +208,12 @@ class AppWindow(QWidget):
         self.prev_file_opener.selectFile.clicked.connect(self.homeAndAway) 
         self.grid.addWidget(self.file_opener, 0, 0) 
        # self.grid.addWidget(self.delete_add, 1, 0)
-        self.finished_button = QPushButton("Finished!") 
-        self.finished_button.clicked.connect(self.finished) 
-        self.grid.addWidget(self.finished_button, 2, 0) 
+        #self.finished_button = QPushButton("Finished!") 
+        #self.finished_button.clicked.connect(self.finished) 
+        #self.grid.addWidget(self.finished_button, 2, 0) 
         #self.grid.addWidget(AddConstraints(), 3, 0) 
         self.setLayout(self.grid)
-    @pyqtSlot() 
+    #@pyqtSlot() 
     def finished(self):  
         global widget 
         widget.getNextWindow() 
@@ -257,6 +258,7 @@ class AppWindow(QWidget):
         teams = controller.homeAway(filename, curr_sheet)
         self.prev_file_opener.hide()  
         self.grid.removeWidget(self.prev_file_opener)  
+        self.finished() 
 
 
 
@@ -265,7 +267,7 @@ class ChooseDates(QWidget):
         super(ChooseDates, self).__init__(parent) 
         self.year_label = QLabel("Choose year") 
         self.year_choice = QComboBox() 
-        self.year_choice.addItems(list(map(str, range(2020, 2100)))) 
+        self.year_choice.addItems(list(map(str, range(2015, 2100)))) 
         self.year_choice.setStyleSheet("QComboBox { combobox-popup: 0; }")
         self.year_choice.setMaxVisibleItems(10)
         self.year_choice.currentIndexChanged.connect(self.selection_made)
@@ -317,11 +319,14 @@ class WindowSwitcher(QWidget):
     def done(self): 
         print("Done") 
         self.grid.removeWidget(self.windows[self.currWindow-1]) 
-        self.grid.addWidget(QLabel("Generating schedule")) 
+        self.grid.addWidget(QLabel("Schedule Generated")) 
         print(controller.deleted_teams) 
         print(controller.added_constraints) 
         print(controller.add_teams) 
-        #controller.create_schedule() 
+        print(controller.curr_result) 
+        print(controller.changed)
+        print(controller.prev_result["home_and_away"]) 
+        controller.create_schedule() 
     
 def window():
    app = QApplication(sys.argv)
